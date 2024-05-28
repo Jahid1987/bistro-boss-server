@@ -1,7 +1,15 @@
+const { getDb } = require("../db/connection");
+
 function roleMiddleware(allowedRoles) {
-  return (req, res, next) => {
-    if (req.user && req.user.role) {
-      if (allowedRoles.includes(req.user.role)) {
+  return async (req, res, next) => {
+    const user = await getDb()
+      .collection("users")
+      .findOne({ email: req.user.email });
+    if (!user) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+    if (req.user && user) {
+      if (allowedRoles.includes(user.role)) {
         return next();
       } else {
         return res
@@ -15,5 +23,4 @@ function roleMiddleware(allowedRoles) {
     }
   };
 }
-
 module.exports = roleMiddleware;
