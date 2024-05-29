@@ -39,6 +39,8 @@ async function getCartItemById(req, res) {
     res.status(500).send(err.message);
   }
 }
+
+// deleting item
 async function deleteCartItem(req, res) {
   try {
     const result = await getDb()
@@ -49,6 +51,5 @@ async function deleteCartItem(req, res) {
     res.status(500).send(err.message);
   }
 }
-// deleting item
 
 module.exports = { getCartItems, createCart, getCartItemById, deleteCartItem };

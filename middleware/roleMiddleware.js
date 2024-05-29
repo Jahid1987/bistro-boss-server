@@ -4,10 +4,12 @@ function roleMiddleware(allowedRoles) {
   return async (req, res, next) => {
     const user = await getDb()
       .collection("users")
-      .findOne({ email: req.user.email });
+      .findOne({ email: req.user.email }); // finding the user with email
+
     if (!user) {
       return res.status(401).json({ message: "Unauthorized" });
     }
+
     if (req.user && user) {
       if (allowedRoles.includes(user.role)) {
         return next();
